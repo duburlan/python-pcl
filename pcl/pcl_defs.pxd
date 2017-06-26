@@ -203,6 +203,7 @@ cdef extern from "pcl/filters/statistical_outlier_removal.h" namespace "pcl":
         void setNegative (bool negative)
         void setInputCloud (shared_ptr[PointCloud[T]])
         void filter(PointCloud[T] &c)
+        void filter(vector[int] &i)
 
 ctypedef StatisticalOutlierRemoval[PointXYZ] StatisticalOutlierRemoval_t
 

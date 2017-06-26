@@ -498,13 +498,18 @@ cdef class StatisticalOutlierRemovalFilter:
         self.me.setNegative(negative)
 
     def filter(self):
-        """
-        Apply the filter according to the previously set parameters and return
-        a new pointcloud
-        """
-        cdef PointCloud pc = PointCloud()
-        self.me.filter(pc.thisptr()[0])
-        return pc
+       """
+       Apply the filter according to the previously set parameters and return
+       a new pointcloud
+       """
+       cdef PointCloud pc = PointCloud()
+       self.me.filter(pc.thisptr()[0])
+       return pc
+
+    def filter_ind(self):
+       cdef vector[int] pi;
+       self.me.filter(pi)
+       return pi
 
 cdef class MovingLeastSquares:
     """
