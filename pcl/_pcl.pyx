@@ -778,3 +778,25 @@ cdef class OctreePointCloudSearch(OctreePointCloud):
             np_k_indices[i] = k_indices[i]
         return np_k_indices, np_k_sqr_distances
 
+
+def msg2cloud(msg):
+    assert msg._type == 'sensor_msgs/PointCloud2', 'msg is not a sensor_msgs.msg.PointCloud2'
+
+    cdef cnp.npy_intp n_points = msg.width
+    cdef char* data = msg.data
+    cdef int point_step = msg.point_step
+    cdef cnp.ndarray[float, ndim=2] cloud = np.ones((n_points, 5), dtype=np.float32)
+
+    cdef int offset = 0
+    cdef int u = 0
+    cdef float x, y, z, intencity
+    cdef int ring
+    for u in range(n_points):
+        cloud[u,0] = (<float*>data)[0]
+        cloud[u,1] = (<float*>&data[4])[0]
+        cloud[u,2] = (<float*>&data[8])[0]
+        cloud[u,3] = (<float*>&data[16])[0]
+        cloud[u,4] = (<int*>&data[20])[0]
+        data += point_step
+
+    return cloud
